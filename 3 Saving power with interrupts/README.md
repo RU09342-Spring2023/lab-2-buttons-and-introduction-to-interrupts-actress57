@@ -76,4 +76,17 @@ Then load up Energy Trace and perform the similar capture of Power with the LED 
 
 
 # Screenshots and Answers to Questions
-**Replace this section with your screenshots of Energy Trace and provide some reasoning as to Questions 1 and 2 in the Power consumption of the Interrupts Section.**
+
+Question 1: The baseline is higher in the polling example because it is using more power.
+Question 2: The CPU is still running on the board eve though the LED is unplugged, so there is still power.
+
+The picture below is the power tracing using the interrupts.
+![PowerTracingInterrupt](https://user-images.githubusercontent.com/91505758/215900741-e17c13fe-ff76-485c-8bc6-431b6416a137.png)
+
+The picture below is the power tracing using the polling.
+![PowerTracingPolling](https://user-images.githubusercontent.com/91505758/215900877-00d1e71e-7caf-4ac2-b342-7ad606adf2ff.png)
+
+
+
+
+
