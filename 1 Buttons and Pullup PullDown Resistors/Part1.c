@@ -1,7 +1,7 @@
 /*
  *  Pull-Up Resistor Configuration
  *
- *  Created on: Jan 30, 2023
+ *  Created on: Jan 31, 2023
  *      Author: Russell Trafford
  *      Version: 1.0
  *
@@ -32,10 +32,15 @@ int main(void)
 
     while(1)
     {
-        if (P2IN & BIT3)            // If S2 (P2.3) is pressed
+        // BIT3 00001000
+        // P2IN 11100000
+        //  &   00000000
+        if (!(P2IN & BIT3))            // If S2 (P2.3) is pressed (if the button is not not being pressed)
             P6OUT ^= BIT6;          // Toggle P6.6
-        if (P4IN & BIT1)            // If S1 (P4.1) is pressed
+
+        if (!(P4IN & BIT1))            // If S1 (P4.1) is pressed
             P1OUT ^= BIT0;          // Toggle P1.0
+
         __delay_cycles(100000);             // Delay for 100000*(1/MCLK)=0.1s
     }
 
@@ -52,6 +57,7 @@ void gpioInit()
        P2DIR &= ~BIT3;             // Configure P2.3 to an Input
        P4DIR &= ~BIT1;             // Configure P4.1 to an Input
 
+
    // Configuring Pullup Resistors per MSP430FR2355 Family User Guide
    /*
     *   PXDIR | PXREN | PXOUT | I/O Configuration
@@ -66,4 +72,5 @@ void gpioInit()
 
        P4REN |= BIT1;               // Enable Resistor on P4.1
        P4OUT |= BIT1;               // Configure Resistor on P4.1 to be Pullup
+
 }
