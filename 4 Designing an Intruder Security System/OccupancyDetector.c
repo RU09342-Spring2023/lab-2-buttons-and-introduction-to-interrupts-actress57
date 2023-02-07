@@ -2,9 +2,7 @@
 
 void gpioInit();
 
-/**
- * main.c
- */
+
 int main(void)
 {
     WDTCTL = WDTPW | WDTHOLD;   // stop watchdog timer
@@ -16,14 +14,11 @@ int main(void)
 
     #define i()                 //counter variable
 
-
-
     while(1)
     {
-
         if (!(P4IN & BIT1))            // If S1 (P4.1) is pressed
         {
-            int i = 0                   // initalizes counter to 0
+            int i = 0;                   // Initializes counter to 0
 
             do
             {                           //do the warning state until 10 seconds pass or button is let go
@@ -32,7 +27,7 @@ int main(void)
 
                 __delay_cycles(200000);
 
-                i = i + 1;              //Add to counter after every cylce
+                i = i + 1;              //Add to counter after every cycle
 
                 if ((P4IN & BIT1))      //If the button is let go before 10 seconds go to Armed
                    {
@@ -46,17 +41,15 @@ int main(void)
             {
                 P1OUT |= BIT0;          //solid red LED
 
-                    if (!(P4IN & BIT1))  //if the button is pressed reset while loop but i cant figure out how yet
+                    if (!(P2IN & BIT3))  //if the button is pressed reset while loop but i cant figure out how yet
                     {
-                        i = 0;
-                        return;
+                        i = 0;             //reset i
+                        P1OUT &= ~BIT0;     // turn off red LED
+                        P6OUT ^= BIT6;          // Toggle P6.6
+                        __delay_cycles(3000000);             // Delay cycles
                     }
 
-
-
             }while (i == 20);
-
-
 
         }
 
@@ -69,22 +62,6 @@ int main(void)
         }
 
     }
-
-
-
-
-        // BIT3 00001000
-        // P2IN 11100000
-        //  &   00000000
-    /*  if (!(P2IN & BIT3))            // If S2 (P2.3) is pressed (if the button is not not being pressed)
-            P6OUT ^= BIT6;          // Toggle P6.6
-
-        if (!(P4IN & BIT1))            // If S1 (P4.1) is pressed
-            P1OUT ^= BIT0;          // Toggle P1.0
-
-        __delay_cycles(100000);             // Delay for 100000*(1/MCLK)=0.1s */
-
-
     return 0;
 }
 
@@ -101,13 +78,6 @@ void gpioInit()
 
 
    // Configuring Pullup Resistors per MSP430FR2355 Family User Guide
-   /*
-    *   PXDIR | PXREN | PXOUT | I/O Configuration
-    *     0       0       X     Input
-    *     0       1       0     Input with Pull Down Resistor
-    *     0       1       1     Input With Pull Up Resistor
-    *     1       X       X     Output
-    */
 
        P2REN |= BIT3;               // Enable Resistor on P2.3
        P2OUT |= BIT3;               // Configure Resistor on P2.3 to be Pullup
